@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
 import { FeasibilityScoreCard } from '../components/common/FeasibilityScoreCard';
+import { RubricScoreCard } from '../components/project/RubricScoreCard';
 import { ArrowLeft, Rocket, Layers, ShieldAlert, CheckCircle2, Cpu, Clock, Users, Lightbulb, Database, Sparkles, AlertTriangle } from 'lucide-react';
 
 export const IdeaDetailPage: React.FC = () => {
@@ -63,6 +64,9 @@ export const IdeaDetailPage: React.FC = () => {
         )}
       </div>
 
+      {/* Faculty Rubric & Academic Jury Alignment */}
+      <RubricScoreCard project={idea} />
+
       {/* Problem, Solution & Differentiator */}
       <div className="grid-2" style={{ marginBottom: '2rem' }}>
         <div className="card">
@@ -91,136 +95,123 @@ export const IdeaDetailPage: React.FC = () => {
       <div className="grid-2" style={{ marginBottom: '2rem' }}>
         <div className="card">
           <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: '#0F172A', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Users style={{ color: '#4F46E5' }} size={20} /> Target Users & Stakeholders
+            <Users style={{ color: '#2563EB' }} size={20} /> Target Users
           </h3>
-          <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            {idea.targetUsers.map((user, i) => (
-              <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', color: '#334155' }}>
-                <CheckCircle2 size={16} style={{ color: '#0D9488' }} /> {user}
-              </li>
+          <ul style={{ paddingLeft: '1.25rem', color: '#334155', fontSize: '0.9rem', lineHeight: 1.6 }}>
+            {idea.targetUsers.map((user, idx) => (
+              <li key={idx} style={{ marginBottom: '0.35rem' }}>{user}</li>
             ))}
           </ul>
         </div>
 
         <div className="card">
           <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: '#0F172A', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Database style={{ color: '#4F46E5' }} size={20} /> Data & Infrastructure Setup
+            <Database style={{ color: '#7C3AED' }} size={20} /> Data & Hardware Requirements
           </h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', fontSize: '0.875rem' }}>
-            <div>
-              <strong>Primary API / Data:</strong> {idea.dataHardwareRequirements.primaryDataOrAPI}
-            </div>
-            <div style={{ backgroundColor: '#EEF2FF', padding: '0.6rem', borderRadius: '6px', color: '#3730A3' }}>
-              <strong>Mock-Data Fallback:</strong> {idea.dataHardwareRequirements.mockAlternative}
-            </div>
-            <div>
-              <strong>Hardware / Client:</strong> {idea.dataHardwareRequirements.hardwareNotes}
-            </div>
+          <div style={{ fontSize: '0.85rem', color: '#334155', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <div><strong>Primary Data/API:</strong> {idea.dataHardwareRequirements.primaryDataOrAPI}</div>
+            <div><strong>Mock Alternative:</strong> {idea.dataHardwareRequirements.mockAlternative}</div>
+            <div><strong>Hardware Notes:</strong> {idea.dataHardwareRequirements.hardwareNotes}</div>
           </div>
         </div>
       </div>
 
-      {/* MVP Scope vs Future Scope */}
+      {/* MVP Features vs Future Scope */}
       <div className="card" style={{ marginBottom: '2rem' }}>
-        <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#0F172A', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Layers style={{ color: '#4F46E5' }} size={20} /> Feature Scope Architecture
+        <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#0F172A', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <Layers style={{ color: '#2563EB' }} size={22} /> Project Modules & Scope Breakdown
         </h3>
 
-        <div className="grid-2">
-          <div style={{ backgroundColor: '#F8FAFC', padding: '1.25rem', borderRadius: '10px', border: '1px solid #E2E8F0' }}>
-            <h4 style={{ color: '#4F46E5', fontSize: '0.95rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.75rem' }}>
-              Phase 1: MVP Core (Deliverable)
-            </h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-              {idea.mvpFeatures.map((feat) => (
-                <div key={feat.id} style={{ borderLeft: '3px solid #4F46E5', paddingLeft: '0.75rem' }}>
-                  <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#0F172A' }}>{feat.title}</div>
-                  <div style={{ fontSize: '0.85rem', color: '#64748B' }}>{feat.description}</div>
+        <div style={{ marginBottom: '1.5rem' }}>
+          <h4 style={{ fontSize: '1rem', fontWeight: 600, color: '#0D9488', marginBottom: '0.75rem' }}>
+            Core MVP Features (Phase 1 Deliverables)
+          </h4>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
+            {idea.mvpFeatures.map((feat) => (
+              <div key={feat.id} style={{ backgroundColor: '#F8FAFC', padding: '1rem', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
+                <div style={{ fontWeight: 600, color: '#0F172A', fontSize: '0.925rem', marginBottom: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <CheckCircle2 size={16} color="#0D9488" /> {feat.title}
                 </div>
-              ))}
-            </div>
+                <p style={{ fontSize: '0.825rem', color: '#64748B', margin: 0, lineHeight: 1.4 }}>
+                  {feat.description}
+                </p>
+              </div>
+            ))}
           </div>
+        </div>
 
-          <div style={{ backgroundColor: '#F8FAFC', padding: '1.25rem', borderRadius: '10px', border: '1px solid #E2E8F0' }}>
-            <h4 style={{ color: '#0D9488', fontSize: '0.95rem', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.75rem' }}>
-              Phase 2: Future Scope (Thesis Add-on)
-            </h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-              {idea.futureScope.map((feat) => (
-                <div key={feat.id} style={{ borderLeft: '3px solid #0D9488', paddingLeft: '0.75rem' }}>
-                  <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#0F172A' }}>{feat.title}</div>
-                  <div style={{ fontSize: '0.85rem', color: '#64748B' }}>{feat.description}</div>
+        <div>
+          <h4 style={{ fontSize: '1rem', fontWeight: 600, color: '#6366F1', marginBottom: '0.75rem' }}>
+            Future Work Scope (Post-MVP / Thesis Recommendations)
+          </h4>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
+            {idea.futureScope.map((feat) => (
+              <div key={feat.id} style={{ backgroundColor: '#F8FAFC', padding: '1rem', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
+                <div style={{ fontWeight: 600, color: '#0F172A', fontSize: '0.925rem', marginBottom: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <Sparkles size={16} color="#6366F1" /> {feat.title}
                 </div>
-              ))}
-            </div>
+                <p style={{ fontSize: '0.825rem', color: '#64748B', margin: 0, lineHeight: 1.4 }}>
+                  {feat.description}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Recommended Tech Stack & System Architecture */}
+      {/* Recommended Tech Stack */}
       <div className="card" style={{ marginBottom: '2rem' }}>
         <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#0F172A', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Cpu style={{ color: '#4F46E5' }} size={20} /> Tech Stack & Architecture Rationale
+          <Cpu style={{ color: '#2563EB' }} size={22} /> Recommended Technology Stack
         </h3>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
           {idea.recommendedStack.map((item, idx) => (
-            <div key={idx} style={{ backgroundColor: '#EEF2FF', padding: '1rem', borderRadius: '8px', border: '1px solid #C7D2FE' }}>
-              <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#4338CA', textTransform: 'uppercase' }}>{item.category}</div>
-              <div style={{ fontSize: '1.05rem', fontWeight: 700, color: '#0F172A', margin: '0.2rem 0' }}>{item.technology}</div>
-              <div style={{ fontSize: '0.825rem', color: '#475569' }}>{item.reason}</div>
-            </div>
-          ))}
-        </div>
-
-        <div style={{ backgroundColor: '#F8FAFC', padding: '1rem', borderRadius: '8px', borderLeft: '4px solid #0D9488', fontSize: '0.9rem', color: '#334155' }}>
-          <strong>System Design Summary:</strong> {idea.architectureSummary}
-        </div>
-      </div>
-
-      {/* Milestone Plan Overview */}
-      <div className="card" style={{ marginBottom: '2rem' }}>
-        <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#0F172A', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Sparkles style={{ color: '#4F46E5' }} size={20} /> 4-Sprint Milestone Plan
-        </h3>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          {idea.milestones.map((m) => (
-            <div key={m.week} style={{ borderLeft: '3px solid #4F46E5', paddingLeft: '1rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#0F172A' }}>{m.phaseTitle}</span>
-                <span className="badge badge-indigo">Week {m.week}</span>
+            <div key={idx} style={{ backgroundColor: '#F1F5F9', padding: '0.85rem', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
+              <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: '#64748B', marginBottom: '0.25rem' }}>
+                {item.category}
               </div>
-              <p style={{ fontSize: '0.85rem', color: '#475569', margin: '0.2rem 0' }}><strong>Deliverable:</strong> {m.deliverable}</p>
+              <div style={{ fontWeight: 700, color: '#0F172A', fontSize: '0.95rem', marginBottom: '0.35rem' }}>
+                {item.technology}
+              </div>
+              <div style={{ fontSize: '0.8rem', color: '#475569', lineHeight: 1.4 }}>
+                {item.reason}
+              </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Risks & Mitigations Table */}
-      <div className="card" style={{ marginBottom: '2rem' }}>
+      {/* Risks & Mitigations */}
+      <div className="card" style={{ marginBottom: '2.5rem' }}>
         <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#0F172A', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <AlertTriangle style={{ color: '#D97706' }} size={20} /> Risk Assessment & Mitigation Strategies
+          <AlertTriangle style={{ color: '#EAB308' }} size={22} /> Technical Risks & Mitigation Plan
         </h3>
-
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-          {idea.risks.map((r, i) => (
-            <div key={i} style={{ backgroundColor: '#FFFBEB', border: '1px solid #FCD34D', padding: '0.85rem', borderRadius: '8px', fontSize: '0.875rem' }}>
-              <div style={{ color: '#92400E', fontWeight: 700, marginBottom: '0.2rem' }}>
-                Risk [{r.impact} Impact]: {r.risk}
+          {idea.risks.map((r, idx) => (
+            <div key={idx} style={{ backgroundColor: '#FFFBEB', padding: '0.85rem 1rem', borderRadius: '8px', borderLeft: '4px solid #F59E0B', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem', flexWrap: 'wrap' }}>
+              <div style={{ flex: 1, minWidth: '240px' }}>
+                <div style={{ fontWeight: 600, color: '#92400E', fontSize: '0.9rem', marginBottom: '0.2rem' }}>
+                  Risk: {r.risk}
+                </div>
+                <div style={{ fontSize: '0.825rem', color: '#B45309' }}>
+                  <strong>Mitigation:</strong> {r.mitigation}
+                </div>
               </div>
-              <div style={{ color: '#B45309' }}>
-                <strong>Mitigation Strategy:</strong> {r.mitigation}
-              </div>
+              <span className={`badge ${r.impact === 'High' ? 'badge-amber' : 'badge-neutral'}`}>
+                {r.impact} Impact
+              </span>
             </div>
           ))}
         </div>
       </div>
 
       {/* Bottom CTA */}
-      <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-        <button onClick={() => selectProjectToExecute(idea)} className="btn btn-primary" style={{ padding: '0.85rem 2.5rem', fontSize: '1.1rem' }}>
-          <Rocket size={20} /> Select & Start Execution Workspace
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
+        <button onClick={() => setScreen('results')} className="btn btn-secondary">
+          <ArrowLeft size={16} /> Back to Recommendations
+        </button>
+        <button onClick={() => selectProjectToExecute(idea)} className="btn btn-primary" style={{ padding: '0.75rem 2rem', fontSize: '1rem' }}>
+          <Rocket size={18} /> Launch Workspace With This Idea
         </button>
       </div>
     </div>

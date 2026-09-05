@@ -3,6 +3,7 @@ import { AppProvider, useApp } from './context/AppContext';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { Toast } from './components/common/Toast';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { LandingPage } from './pages/LandingPage';
 
 // Performance optimization: Lazy-load screen views
@@ -68,7 +69,9 @@ export const AppContent: React.FC = () => {
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Navbar />
       <main style={{ flex: 1 }}>
-        <ScreenRenderer />
+        <ErrorBoundary>
+          <ScreenRenderer />
+        </ErrorBoundary>
       </main>
       <Footer />
       <Toast />

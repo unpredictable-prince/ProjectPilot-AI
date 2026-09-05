@@ -12,6 +12,7 @@ export default async function handler(req: any, res: any) {
     res.statusCode = 200;
     return res.json(result);
   } catch (err) {
+    console.error('[API Error]', err);
     res.statusCode = 500;
     return res.json({ error: 'Server endpoint error' });
   }

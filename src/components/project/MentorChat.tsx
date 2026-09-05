@@ -82,6 +82,9 @@ export const MentorChat: React.FC<MentorChatProps> = ({
 
       <div
         ref={chatContainerRef}
+        role="log"
+        aria-live="polite"
+        aria-label="AI Mentor Conversation History"
         style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '1rem', paddingRight: '0.5rem', marginBottom: '1rem' }}
       >
         {messages.map((msg) => (

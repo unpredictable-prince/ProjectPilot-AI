@@ -3,12 +3,12 @@ import type { ProjectIdea, MentorMessage, FeasibilityBreakdown, StructuredMentor
 import type { GenerateIdeasResponse, ProjectPitchResponse } from '../types/api';
 import { FallbackGenerator } from '../services/fallbackGenerator';
 import { FeasibilityEngine } from '../services/feasibilityEngine';
-declare const process: any;
+import { DEFAULT_GEMINI_MODEL, CANDIDATE_GEMINI_MODELS, isValidGeminiResponsePayload } from '../config/aiConfig';
 
-const DEFAULT_GEMINI_MODEL = 'gemini-1.5-flash';
+declare const process: { env: Record<string, string | undefined> };
 
 /**
- * Reads configured server-side GEMINI_MODEL or falls back to gemini-3.7-flash
+ * Reads configured server-side GEMINI_MODEL or falls back to default flash model
  */
 export function getSafeGeminiModel(): string {
   return (process.env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL).trim();
@@ -91,8 +91,8 @@ Return strict JSON format with key "ideas" containing an array of 4 project obje
   ]
 }`;
 
-    const candidateModels = Array.from(new Set([modelName, 'gemini-1.5-flash', 'gemini-2.0-flash-exp', 'gemini-1.5-pro']));
-    let response: any = null;
+    const candidateModels = Array.from(new Set([modelName, ...CANDIDATE_GEMINI_MODELS]));
+    let response: Response | null = null;
     let successfulModel = modelName;
 
     for (const m of candidateModels) {
@@ -123,19 +123,23 @@ Return strict JSON format with key "ideas" containing an array of 4 project obje
     console.log(`[Server API Diagnostic] Live generation succeeded with model: ${successfulModel}`);
 
     const rawJson = await response.json();
-    const text = rawJson?.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!text) throw new Error('Empty response from Gemini model');
+    if (!isValidGeminiResponsePayload(rawJson)) {
+      throw new Error('Invalid JSON payload schema received from Gemini API');
+    }
 
-    let parsed: any;
+    const text = rawJson.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!text) throw new Error('Empty response text from Gemini model');
+
+    let parsed: Record<string, unknown>;
     try {
       parsed = JSON.parse(text);
     } catch {
       throw new Error('Malformed JSON payload received from Gemini model');
     }
 
-    const parsedIdeas: any[] = parsed.ideas || parsed;
+    const parsedIdeas = (Array.isArray(parsed.ideas) ? parsed.ideas : Array.isArray(parsed) ? parsed : []) as Record<string, any>[];
 
-    if (!Array.isArray(parsedIdeas) || parsedIdeas.length === 0 || !parsedIdeas[0]?.title) {
+    if (parsedIdeas.length === 0 || !parsedIdeas[0]?.title) {
       throw new Error('AI response failed strict schema validation checks');
     }
 
@@ -199,7 +203,7 @@ Return strict JSON format with key "ideas" containing an array of 4 project obje
       source: 'gemini',
     };
   } catch (err) {
-    console.warn('[Server API] Live Gemini call unconfigured or using fallback generator');
+    console.warn('[Server API] Live Gemini call unconfigured or using fallback generator:', err instanceof Error ? err.message : err);
     const fallbackIdeas = FallbackGenerator.generateIdeasForProfile(profile);
     return {
       ideas: fallbackIdeas,
@@ -442,6 +446,7 @@ Return strict JSON format matching this schema:
       source: 'gemini',
     };
   } catch (err) {
+    console.warn('[Server API] Pitch deck generator using fallback:', err instanceof Error ? err.message : err);
     return {
       title: project.title,
       hook: project.valueProposition,

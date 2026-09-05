@@ -19,11 +19,13 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }
 
   if (!isOpen) return null;
 
-  return (
-    <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true">
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid #E2E8F0' }}>
-          <h3 style={{ fontSize: '1.15rem', fontWeight: 600, color: '#0F172A' }}>{title}</h3>
+    const titleId = `modal-title-${title.replace(/\s+/g, '-').toLowerCase()}`;
+
+    return (
+      <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby={titleId}>
+        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid #E2E8F0' }}>
+            <h3 id={titleId} style={{ fontSize: '1.15rem', fontWeight: 600, color: '#0F172A' }}>{title}</h3>
           <button
             onClick={onClose}
             style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748B', padding: '0.25rem' }}
