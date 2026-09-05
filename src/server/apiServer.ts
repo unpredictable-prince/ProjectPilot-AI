@@ -3,7 +3,7 @@ import type { ProjectIdea, MentorMessage, FeasibilityBreakdown, StructuredMentor
 import type { GenerateIdeasResponse, ProjectPitchResponse } from '../types/api';
 import { FallbackGenerator } from '../services/fallbackGenerator';
 import { FeasibilityEngine } from '../services/feasibilityEngine';
-import { DEFAULT_GEMINI_MODEL, CANDIDATE_GEMINI_MODELS, isValidGeminiResponsePayload } from '../config/aiConfig';
+import { DEFAULT_GEMINI_MODEL, CANDIDATE_GEMINI_MODELS, isValidGeminiResponsePayload, type GeminiResponsePayload } from '../config/aiConfig';
 
 declare const process: { env: Record<string, string | undefined> };
 
@@ -243,7 +243,7 @@ Return JSON matching this exact schema:
         });
 
         if (response.ok) {
-          const rawJson = await response.json();
+          const rawJson = (await response.json()) as GeminiResponsePayload;
           const text = rawJson?.candidates?.[0]?.content?.parts?.[0]?.text;
           if (text) {
             const parsed = JSON.parse(text);
@@ -428,7 +428,7 @@ Return strict JSON format matching this schema:
       throw new Error(`Gemini status ${response.status}`);
     }
 
-    const rawJson = await response.json();
+    const rawJson = (await response.json()) as GeminiResponsePayload;
     const text = rawJson?.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!text) throw new Error('Empty response from Gemini');
 
