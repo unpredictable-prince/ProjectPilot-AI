@@ -1,9 +1,9 @@
-import type { StudentProfile } from '../types/profile.ts';
-import type { ProjectIdea, MentorMessage, FeasibilityBreakdown, StructuredMentorResponse } from '../types/project.ts';
-import type { GenerateIdeasResponse, ProjectPitchResponse } from '../types/api.ts';
-import { FallbackGenerator } from '../services/fallbackGenerator.ts';
-import { FeasibilityEngine } from '../services/feasibilityEngine.ts';
-import { DEFAULT_GEMINI_MODEL, CANDIDATE_GEMINI_MODELS, isValidGeminiResponsePayload, type GeminiResponsePayload } from '../config/aiConfig.ts';
+import type { StudentProfile } from '../types/profile.js';
+import type { ProjectIdea, MentorMessage, FeasibilityBreakdown, StructuredMentorResponse } from '../types/project.js';
+import type { GenerateIdeasResponse, ProjectPitchResponse } from '../types/api.js';
+import { FallbackGenerator } from '../services/fallbackGenerator.js';
+import { FeasibilityEngine } from '../services/feasibilityEngine.js';
+import { DEFAULT_GEMINI_MODEL, CANDIDATE_GEMINI_MODELS, isValidGeminiResponsePayload, type GeminiResponsePayload } from '../config/aiConfig.js';
 
 declare const process: { env: Record<string, string | undefined> };
 

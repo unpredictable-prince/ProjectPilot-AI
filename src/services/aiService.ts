@@ -1,8 +1,8 @@
-import type { StudentProfile } from '../types/profile.ts';
-import type { ProjectIdea, MentorMessage, StructuredMentorResponse } from '../types/project.ts';
-import type { GenerateIdeasResponse, ProgressReviewResponse, ProjectPitchResponse } from '../types/api.ts';
-import { FallbackGenerator } from './fallbackGenerator.ts';
-import { AuthService } from './authService.ts';
+import type { StudentProfile } from '../types/profile.js';
+import type { ProjectIdea, MentorMessage, StructuredMentorResponse } from '../types/project.js';
+import type { GenerateIdeasResponse, ProgressReviewResponse, ProjectPitchResponse } from '../types/api.js';
+import { FallbackGenerator } from './fallbackGenerator.js';
+import { AuthService } from './authService.js';
 
 /**
  * Frontend AI Service client layer.

@@ -1,5 +1,5 @@
-import type { User, AuthSession, AdminAnalytics, UserSummary } from '../types/auth.ts';
-import type { ProjectIdea } from '../types/project.ts';
+import type { User, AuthSession, AdminAnalytics, UserSummary } from '../types/auth.js';
+import type { ProjectIdea } from '../types/project.js';
 
 const SESSION_KEY = 'projectpilot_auth_session';
 const USERS_DB_KEY = 'projectpilot_db_users';

@@ -1,4 +1,4 @@
-import { handleGenerateIdeasServer } from '../src/server/apiServer.ts';
+import { handleGenerateIdeasServer } from '../src/server/apiServer.js';
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {

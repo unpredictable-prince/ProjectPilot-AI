@@ -1,5 +1,5 @@
-import type { StudentProfile } from '../types/profile.ts';
-import type { FeasibilityBreakdown, DifficultyLevel } from '../types/project.ts';
+import type { StudentProfile } from '../types/profile.js';
+import type { FeasibilityBreakdown, DifficultyLevel } from '../types/project.js';
 
 export const FeasibilityEngine = {
   /**
