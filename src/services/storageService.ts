@@ -1,5 +1,5 @@
-import type { StudentProfile, PresetProfile } from '../types/profile';
-import type { ProjectIdea } from '../types/project';
+import type { StudentProfile, PresetProfile } from '../types/profile.ts';
+import type { ProjectIdea } from '../types/project.ts';
 
 const STORAGE_KEYS = {
   PROFILE_DRAFT: 'projectpilot_profile_draft',

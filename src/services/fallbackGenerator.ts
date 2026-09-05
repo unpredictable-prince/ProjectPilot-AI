@@ -1,6 +1,6 @@
-import type { StudentProfile } from '../types/profile';
-import type { ProjectIdea, Milestone, SprintTask, RiskFactor, MVPFeature, FutureFeature, RecommendedStackItem } from '../types/project';
-import { FeasibilityEngine } from './feasibilityEngine';
+import type { StudentProfile } from '../types/profile.ts';
+import type { ProjectIdea, Milestone, SprintTask, RiskFactor, MVPFeature, FutureFeature, RecommendedStackItem } from '../types/project.ts';
+import { FeasibilityEngine } from './feasibilityEngine.ts';
 
 export const FallbackGenerator = {
   generateIdeasForProfile(profile: StudentProfile): ProjectIdea[] {

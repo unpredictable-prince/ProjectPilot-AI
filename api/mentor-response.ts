@@ -1,4 +1,4 @@
-import { handleMentorResponseServer } from '../src/server/apiServer';
+import { handleMentorResponseServer } from '../src/server/apiServer.ts';
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
